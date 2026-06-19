@@ -16,7 +16,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out specific branch...'
-                git branch: 'master',
+                git branch: 'main',
                     url: 'https://github.com/ajay-sain/api-gateway',
                     credentialsId: 'systemjenkinsuser' // ID defined in Jenkins Credentials Provider
             }
