@@ -18,7 +18,7 @@ pipeline {
                 echo 'Checking out specific branch...'
                 git branch: 'master',
                     url: 'https://github.com/ajay-sain/yourmart',
-                    credentialsId: 'sysjenkinsuser' // ID defined in Jenkins Credentials Provider
+                    credentialsId: 'systemjenkinsuser' // ID defined in Jenkins Credentials Provider
             }
                 }
 
