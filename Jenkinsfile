@@ -42,17 +42,12 @@ pipeline {
             }
         }
 
-        stage('Package Jar') {
+        stage('Package & Deploy to Nexus') {
             steps {
-                echo 'Packaging application into an executable JAR...'
-                // Skips tests here since they passed in the previous stage
-                sh 'mvn package -DskipTests'
-            }
-            post {
-                success {
-                    // Stores the built JAR artifact in Jenkins for download
-                    archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-                }
+                echo 'Packaging and uploading artifact to Nexus...'
+                    
+                // Pass credentials directly into Maven execution parameters
+                sh "mvn clean deploy -DskipTests -Dusername=admin -Dpassword=root@123"
             }
         }
     }
