@@ -3,8 +3,8 @@ pipeline {
 
     tools {
         // Must match the identifier defined in Jenkins Global Tool Configuration
-        maven 'Maven 3.9' 
-        jdk 'Java 17'
+        maven 'Maven3'
+        jdk 'jdk17'
     }
 
     environment {
@@ -15,10 +15,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Pulls code from the SCM repository configured in the Jenkins job
-                checkout scm
+                echo 'Checking out specific branch...'
+                git branch: 'master',
+                    url: 'https://github.com/ajay-sain/yourmart',
+                    credentialsId: 'sysjenkinsuser' // ID defined in Jenkins Credentials Provider
             }
-        }
+                }
 
         stage('Clean & Compile') {
             steps {
@@ -44,7 +46,7 @@ pipeline {
             steps {
                 echo 'Packaging application into an executable JAR...'
                 // Skips tests here since they passed in the previous stage
-                sh 'mvn package -DskipTests' 
+                sh 'mvn package -DskipTests'
             }
             post {
                 success {
