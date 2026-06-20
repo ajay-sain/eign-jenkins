@@ -68,7 +68,7 @@ pipeline {
                         </servers>
                     </settings>
                     """
-                    sh "mvn clean deploy -DskipTests -Dusername=${NEXUS_USER} -Dpassword=${NEXUS_PASS}"
+                    sh 'mvn clean deploy -DskipTests --settings settings.xml'
                 }
             }
         }
