@@ -20,7 +20,20 @@ pipeline {
                     url: 'https://github.com/ajay-sain/hello',
                     credentialsId: 'systemjenkinsuser' // ID defined in Jenkins Credentials Provider
             }
+        }
+
+        stage('Determine Version') {
+            steps {
+                script {
+                    // 1. Fetch version from pom.xml dynamically
+                    env.APP_VERSION = sh(
+                        script: "mvn help:evaluate -Dexpression=project.version -q -DforceStdout",
+                        returnStdout: true
+                    ).trim()
+                    echo "Building version: ${env.APP_VERSION}"
                 }
+            }
+        }
 
         stage('Clean & Compile') {
             steps {
