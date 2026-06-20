@@ -45,9 +45,31 @@ pipeline {
         stage('Package & Deploy to Nexus') {
             steps {
                 echo 'Packaging and uploading artifact to Nexus...'
+                
+                // Fetch credentials securely from Jenkins Credentials Provider
+                withCredentials([usernamePassword(credentialsId: 'nexus-credentials-id', 
+                                                 usernameVariable: 'NEXUS_USER', 
+                                                 passwordVariable: 'NEXUS_PASS'),]) {
                     
-                // Pass credentials directly into Maven execution parameters
-                sh "mvn clean deploy -DskipTests -Dusername=admin -Dpassword=root@123"
+                    // Pass credentials directly into Maven execution parameters
+                    writeFile file: 'settings.xml', text: """
+                    <settings>
+                        <servers>
+                            <server>
+                                <id>nexus-snapshots</id>
+                                <username>${NEXUS_USER}</username>
+                                <password>${NEXUS_PASS}</password>
+                            </server>
+                            <server>
+                                <id>nexus-releases</id>
+                                <username>${NEXUS_USER}</username>
+                                <password>${NEXUS_PASS}</password>
+                            </server>
+                        </servers>
+                    </settings>
+                    """
+                    sh "mvn clean deploy -DskipTests -Dusername=${NEXUS_USER} -Dpassword=${NEXUS_PASS}"
+                }
             }
         }
     }
