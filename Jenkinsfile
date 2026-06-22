@@ -3,8 +3,8 @@ pipeline {
 
     tools {
         // Must match the identifier defined in Jenkins Global Tool Configuration
-        maven 'Maven'
-        jdk 'jdk17'
+        maven 'maven3'
+        jdk 'jdk21'
     }
 
     environment {
